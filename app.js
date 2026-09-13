@@ -141,7 +141,7 @@ function holdingRow(h) {
   const sc = scoreParts(h).score;
   return `<button class="row" data-go="stock" data-sym="${h.sym}">
     <div class="tile" style="background:${h.color}">${esc(h.sym.slice(0, 4))}</div>
-    <div><p class="name">${esc(h.name)}</p><p class="meta">Bought ${h.buyLabel} at ${money(h.buyPrice)}</p></div>
+    <div><p class="name">${esc(h.name)}</p><p class="meta">${h.buyLabel} at ${money(h.buyPrice)}</p></div>
     <div class="rowscore" title="Score">${ring(sc, 38, 4, 13)}</div>
     <div class="right"><p class="price tnum">${money(last)}</p><p class="putin tnum">Put in ${money(h.invested, 0)}</p><span class="pill ${r >= 0 ? "up" : "down"} tnum">${pct(r, 0)}</span></div>
   </button>`;

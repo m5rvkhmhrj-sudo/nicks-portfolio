@@ -66,8 +66,9 @@ body.fit{background:var(--bg)}body.fit .stage{padding:0;min-height:0;display:blo
 .row{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:12px 14px;background:var(--card);border-radius:16px;margin-bottom:8px}
 .row:active{background:var(--card-2)}
 .tile{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-weight:700;font-size:14px;color:#0B0B10;flex:none}
-.row .name{font-size:15px;font-weight:600;margin:0}
-.row .meta{font-size:12px;color:var(--muted);margin:2px 0 0}
+.row .name{font-size:15px;font-weight:600;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .meta{font-size:12px;color:var(--muted);margin:2px 0 0;white-space:nowrap}
+.row > div:nth-child(2){min-width:0;flex:1}
 .row .right{margin-left:auto;text-align:right}
 .row .price{font-size:15px;font-weight:600;margin:0}
 .row .putin{font-size:11px;color:var(--muted);margin:2px 0 0;white-space:nowrap}
