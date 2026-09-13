@@ -108,7 +108,7 @@ function ring(score, size = 62, stroke = 6, fontSize = 20, label = "") {
       <circle cx="${size / 2}" cy="${size / 2}" r="${r}" fill="none" stroke="#26263A" stroke-width="${stroke}"/>
       <circle cx="${size / 2}" cy="${size / 2}" r="${r}" fill="none" stroke="${col}" stroke-width="${stroke}" stroke-linecap="round" stroke-dasharray="${c.toFixed(1)}" stroke-dashoffset="${(c * (1 - score / 100)).toFixed(1)}"/>
     </svg>
-    <span class="num" style="font-size:${fontSize}px">${score}</span>${label ? `<span class="lbl">${label}</span>` : ""}
+    <span class="num" style="font-size:${fontSize}px">${score}</span>${label ? `<span class="lbl" style="--lbl-off:${Math.round(fontSize * 0.62)}px">${label}</span>` : ""}
   </div>`;
 }
 
