@@ -100,6 +100,17 @@ function lineChart(points, { color = "#7C5CFF", w = 358, h = 170, baseline = tru
     <circle cx="${w}" cy="${Y(last[1]).toFixed(1)}" r="4" fill="${color}"/>
   </svg>`;
 }
+// Two bars: what it was bought at, what it's at now. The simplest possible graph.
+function twoBar(bought, now, { boughtLabel = "Bought at", nowLabel = "Now", boughtSub = "", nowSub = "", digits = 2 } = {}) {
+  const max = Math.max(bought, now, 1e-9);
+  const hB = Math.max(4, Math.round((bought / max) * 100));
+  const hN = Math.max(4, Math.round((now / max) * 100));
+  const up = now >= bought;
+  return `<div class="twobar">
+    <div class="col"><p class="val tnum">${money(bought, digits)}</p><div class="bar-v"><i style="height:${hB}%;background:#3A3A4E"></i></div><p class="lbl">${esc(boughtLabel)}</p>${boughtSub ? `<p class="sub">${esc(boughtSub)}</p>` : ""}</div>
+    <div class="col"><p class="val tnum" style="color:${up ? "var(--gain)" : "var(--loss)"}">${money(now, digits)}</p><div class="bar-v"><i style="height:${hN}%;background:${up ? "var(--gain)" : "var(--loss)"}"></i></div><p class="lbl">${esc(nowLabel)}</p>${nowSub ? `<p class="sub">${esc(nowSub)}</p>` : ""}</div>
+  </div>`;
+}
 function ring(score, size = 62, stroke = 6, fontSize = 20, label = "") {
   const r = (size - stroke) / 2, c = 2 * Math.PI * r;
   const col = score >= 70 ? "var(--gain)" : score >= 45 ? "var(--accent)" : "var(--loss)";
@@ -127,9 +138,11 @@ function go(screen, extra = {}) { Object.assign(state, { screen }, extra); rende
 // ---------- screens ----------
 function holdingRow(h) {
   const last = lastPrice(h), r = last / h.buyPrice - 1;
+  const sc = scoreParts(h).score;
   return `<button class="row" data-go="stock" data-sym="${h.sym}">
     <div class="tile" style="background:${h.color}">${esc(h.sym.slice(0, 4))}</div>
     <div><p class="name">${esc(h.name)}</p><p class="meta">Bought ${h.buyLabel} at ${money(h.buyPrice)}</p></div>
+    <div class="rowscore" title="Score">${ring(sc, 38, 4, 13)}</div>
     <div class="right"><p class="price tnum">${money(last)}</p><span class="pill ${r >= 0 ? "up" : "down"} tnum">${pct(r, 0)}</span></div>
   </button>`;
 }
@@ -148,7 +161,11 @@ function homeScreen() {
     <div class="chart">${lineChart(series)}</div>
     <div class="ranges">${["1M", "6M", "1Y", "ALL"].map((r) => `<button data-range="${r}" class="${state.range === r ? "on" : ""}">${r}</button>`).join("")}</div>
   </div>
-  <div class="section"><h2>Holdings</h2><span>${money(t.invested, 0)} invested</span></div>
+  <div class="card">
+    <div class="section" style="margin:0 0 6px"><h2 style="font-size:15px">Bought at vs now</h2><span class="pill ${t.ret >= 0 ? "up" : "down"} tnum" style="margin:0">${(t.value / t.invested).toFixed(1)}x</span></div>
+    ${twoBar(t.invested, t.value, { boughtLabel: "Put in", nowLabel: "Worth now", digits: 0 })}
+  </div>
+  <div class="section"><h2>Holdings</h2><span>score · price</span></div>
   ${HOLDINGS.map(holdingRow).join("")}`;
 }
 
@@ -168,9 +185,9 @@ function stockScreen() {
     <div class="chart">${lineChart(s, { color: rr >= 0 ? "#47C784" : "#F0645A" })}</div>
     <div class="ranges">${["1M", "6M", "1Y", "ALL"].map((x) => `<button data-srange="${x}" class="${state.stockRange === x ? "on" : ""}">${x}</button>`).join("")}</div>
   </div>
-  <div class="grid2">
-    <div class="card"><p class="card-title">Bought at</p><p class="card-value tnum">${money(h.buyPrice)}</p><p class="hint">${fmtDate(h.buyDate)}</p></div>
-    <div class="card"><p class="card-title">Currently at</p><p class="card-value tnum">${money(last)}</p><p class="hint ${r >= 0 ? "" : ""}" style="color:${r >= 0 ? "var(--gain)" : "var(--loss)"}">${pct(r, 0)} since buy</p></div>
+  <div class="card">
+    <div class="section" style="margin:0 0 6px"><h2 style="font-size:15px">Bought at vs now</h2><span class="pill ${r >= 0 ? "up" : "down"} tnum" style="margin:0">${pct(r, 0)}</span></div>
+    ${twoBar(h.buyPrice, last, { boughtLabel: "Bought at", nowLabel: "Now", boughtSub: fmtDate(h.buyDate), nowSub: fmtDate(AS_OF) })}
   </div>
   <div class="card" style="display:flex;gap:16px;align-items:center">
     ${ring(sp.score, 72, 7, 22)}
@@ -228,18 +245,17 @@ function scoreScreen() {
   const rows = HOLDINGS.map((h) => ({ h, ...scoreParts(h) })).sort((a, b) => b.score - a.score);
   return `
   <div class="topbar"><button class="iconbtn" data-go="home" aria-label="Back">${ICON.back}</button><span class="chip-date">As of ${fmtDate(AS_OF)}</span></div>
-  <h1 class="h1">Portfolio score</h1>
-  <div class="card" style="display:grid;place-items:center;padding:24px">${ring(ps, 150, 12, 44, "out of 100")}</div>
-  <p class="note">Each stock gets a score from 0 to 100. The <b>past 6 months counts twice</b> and the yearly return since you bought counts once. 50 means flat. The portfolio score is the average.</p>
-  <div class="section"><h2>By stock</h2></div>
-  ${rows.map(({ h, score, r6, cagr: c }) => `<button class="row" data-go="stock" data-sym="${h.sym}" style="display:block">
+  <h1 class="h1">Scores</h1>
+  <p class="hint" style="margin-top:8px">One score per company, 0 to 100. The <b>past 6 months counts twice</b>, the yearly return since you bought counts once. 50 is flat.</p>
+  ${rows.map(({ h, score, r6, cagr: c }) => `<button class="row" data-go="stock" data-sym="${h.sym}" style="display:block;padding:14px">
     <div style="display:flex;align-items:center;gap:12px">
-      <div class="tile" style="background:${h.color}">${esc(h.sym.slice(0, 4))}</div>
-      <div><p class="name">${esc(h.name)}</p><p class="meta">6 mo ${pct(r6, 0)} · yearly ${pct(c, 0)}</p></div>
-      <div class="right"><p class="price tnum">${score}</p></div>
+      ${ring(score, 56, 6, 18)}
+      <div style="flex:1"><p class="name" style="font-size:16px">${esc(h.name)}</p><p class="meta">6 mo ${pct(r6, 0)} · yearly since buy ${pct(c, 0)}</p></div>
+      <div class="tile" style="background:${h.color};width:34px;height:34px;font-size:11px">${esc(h.sym.slice(0, 4))}</div>
     </div>
     <div class="bar"><i style="width:${score}%"></i></div>
-  </button>`).join("")}`;
+  </button>`).join("")}
+  <div class="card" style="display:flex;align-items:center;gap:14px;margin-top:20px">${ring(ps, 56, 6, 18)}<div><p class="card-title" style="margin:0">Portfolio average</p><p class="hint" style="margin:2px 0 0">Mean of the ${rows.length} company scores above.</p></div></div>`;
 }
 
 function tabbar() {

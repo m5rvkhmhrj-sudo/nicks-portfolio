@@ -19,12 +19,18 @@ Phone-first portfolio tracker mockup for Nick. Dark UI, purple accent, Robinhood
 
 Each holding assumes $1,000 invested at purchase. Change `invested` in `data.js` to use real amounts.
 
+## Bought at vs now
+Home has a two-bar card: total put in vs worth now. Each stock page has the same card per share (bought price vs today). Function `twoBar()` in app.js.
+
 ## Score
-Each stock scores 0 to 100. 50 means flat.
+One score per company, shown as a ring on every holdings row on Home and as the main list on the Scores screen. The portfolio average is a small card at the bottom of Scores and the ring in the tab bar. Each stock scores 0 to 100. 50 means flat.
 - recent = 50 + 50 * tanh(6-month return / 0.20)
 - since = 50 + 50 * tanh(yearly return since purchase / 0.35)
 - stock score = (since + 2 * recent) / 3   (past 6 months counts twice)
 - portfolio score = average of stock scores
+
+## Tall render (for checking layouts)
+`reference/_tall.html?screen=home` (or `stock&sym=NVDA`, `score`) lets the phone grow so a headless screenshot shows the whole screen.
 
 ## Deep links
 `index.html?screen=stock&sym=NVDA&range=1Y` and `&fit=1` for a bare 390x844 frame (screenshots).

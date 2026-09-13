@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>tall render</title>
+<link rel="stylesheet" href="../styles.css">
+<style>
+  /* verification only: let the phone grow so the whole screen is visible in one screenshot */
+  body{background:#0B0B10}.stage{padding:0;display:block;min-height:0}
+  .phone{width:390px;height:auto;min-height:844px;border-radius:0;box-shadow:none}
+  .screen{position:static;overflow:visible;height:auto}
+  .tabbar{position:sticky;bottom:0}
+</style></head>
+<body><div class="stage"><div class="phone" id="phone"><main class="screen" id="screen"></main><nav class="tabbar" id="tabbar"></nav></div></div>
+<script src="../data.js"></script><script src="../app.js"></script></body></html>
