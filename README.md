@@ -17,7 +17,8 @@ Phone-first portfolio tracker mockup for Nick. Dark UI, purple accent, Robinhood
 | S&P 500 | Apr 2018 | ^GSPC index level |
 | Apple | Jul 2023 | AAPL |
 
-Each holding assumes $1,000 invested at purchase. Change `invested` in `data.js` to use real amounts.
+Each holding assumes one $1,000 lot at purchase. Edit `lots` in `data/build.py` (or add lots in the app) for real amounts.
+Analyst targets and sector come from `data/analysts.json` (yfinance `.info`).
 
 ## Bought at vs now
 Home has a two-bar card: total put in vs worth now. Each stock page has the same card per share (bought price vs today). Function `twoBar()` in app.js.
