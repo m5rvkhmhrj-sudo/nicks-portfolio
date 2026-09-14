@@ -223,15 +223,20 @@ function reportsFor() {
 const state = { screen: "home", range: "ALL", sym: null, stockRange: "ALL", report: null, showScoreHelp: false };
 const THEMES = ["violet", "mint", "sky", "amber"];
 state.theme = store.get("npf_theme", "violet");
+state.ui = "obsidian";
 {
   const q = new URLSearchParams(location.search);
   if (q.get("screen")) state.screen = q.get("screen");
   if (q.get("sym")) { state.sym = q.get("sym"); state.report = q.get("sym"); }
   if (q.get("range")) { state.range = q.get("range"); state.stockRange = q.get("range"); }
   if (q.get("theme")) state.theme = q.get("theme");
+  if (["obsidian", "ledger", "signal"].includes(q.get("ui"))) state.ui = q.get("ui");
   if (q.has("fit")) document.body.classList.add("fit");
 }
-function applyTheme() { document.documentElement.dataset.theme = state.theme; }
+function applyTheme() {
+  document.documentElement.dataset.theme = state.theme;
+  document.documentElement.dataset.ui = state.ui;
+}
 function go(screen, extra = {}) { Object.assign(state, { screen }, extra); render(); $("#screen").scrollTop = 0; }
 function findH(sym) { return HOLDINGS.find((x) => x.sym === sym) || HOLDINGS[0]; }
 

@@ -1,0 +1,69 @@
+/* Three visual directions for the same product. Selected with ?ui=obsidian|ledger|signal. */
+html[data-ui]{--motion:cubic-bezier(.22,1,.36,1)}
+html[data-ui] body,html[data-ui] button,html[data-ui] input{font-family:"Avenir Next","SF Pro Display",system-ui,sans-serif}
+html[data-ui] .phone{transition:background .7s var(--motion),box-shadow .7s var(--motion)}
+html[data-ui] .card,html[data-ui] .row,html[data-ui] .ep,html[data-ui] .player,html[data-ui] .iconbtn,html[data-ui] .stats>div{transition:transform .55s var(--motion),background .55s var(--motion),box-shadow .55s var(--motion)}
+html[data-ui] .row:hover,html[data-ui] .ep:hover{transform:translateY(-2px)}
+html[data-ui] .screen>*{animation:ui-enter .72s var(--motion) both}
+html[data-ui] .screen>*:nth-child(2){animation-delay:.04s}
+html[data-ui] .screen>*:nth-child(3){animation-delay:.08s}
+html[data-ui] .screen>*:nth-child(4){animation-delay:.12s}
+@keyframes ui-enter{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+/* Obsidian: black glass, restrained violet, dimensional cards. */
+html[data-ui="obsidian"]{
+  --bg:#08080b;--card:#121216;--card-2:#19191f;--line:#292832;--text:#f7f5ff;--muted:#8d8a9b;
+  --accent:#9b7cff;--accent-soft:#28203f;--gain:#57d69a;--gain-soft:#142d23;--loss:#ff766f;--loss-soft:#351b1c;
+}
+html[data-ui="obsidian"] body{background:radial-gradient(circle at 50% 15%,#1b1530 0,#08080b 38%,#030304 100%)}
+html[data-ui="obsidian"] .phone{box-shadow:0 0 0 1px rgba(255,255,255,.12),0 45px 100px rgba(0,0,0,.72),inset 0 1px rgba(255,255,255,.06)}
+html[data-ui="obsidian"] .card,html[data-ui="obsidian"] .row,html[data-ui="obsidian"] .ep,html[data-ui="obsidian"] .stats>div{box-shadow:inset 0 1px rgba(255,255,255,.055),0 12px 32px rgba(0,0,0,.16)}
+html[data-ui="obsidian"] .card{border-radius:24px;padding:18px}
+html[data-ui="obsidian"] .row,html[data-ui="obsidian"] .ep{border-radius:18px}
+html[data-ui="obsidian"] .h1{font-size:37px;letter-spacing:-1.7px}
+html[data-ui="obsidian"] .big{font-size:42px;letter-spacing:-2px}
+html[data-ui="obsidian"] .tabbar{left:14px;right:14px;bottom:12px;height:72px;border:1px solid rgba(255,255,255,.08);border-radius:24px;background:rgba(18,18,24,.94);padding-top:7px;box-shadow:0 18px 40px rgba(0,0,0,.42)}
+html[data-ui="obsidian"] .tab.score .ring{background:#121218;box-shadow:0 0 0 6px #121218}
+html[data-ui="obsidian"] .ranges button.on{box-shadow:0 7px 18px rgba(124,92,255,.25)}
+
+/* Ledger: warm paper, editorial contrast, clear wealth-report hierarchy. */
+html[data-ui="ledger"]{
+  --bg:#f1eee6;--card:#fbf8f1;--card-2:#e8e3d8;--line:#d8d1c3;--text:#1d211d;--muted:#77786f;
+  --accent:#285f4b;--accent-soft:#dce8df;--gain:#247a54;--gain-soft:#dbeade;--loss:#b44c3f;--loss-soft:#f1ddd7;color-scheme:light;
+}
+html[data-ui="ledger"] body{background:#d8d3c8;background-image:radial-gradient(rgba(42,52,44,.08) .6px,transparent .6px);background-size:5px 5px}
+html[data-ui="ledger"] .phone{box-shadow:0 0 0 1px rgba(47,47,38,.16),0 42px 90px rgba(56,48,34,.28);background:var(--bg)}
+html[data-ui="ledger"] .screen{padding-left:22px;padding-right:22px}
+html[data-ui="ledger"] .eyebrow,html[data-ui="ledger"] .card-title{text-transform:uppercase;letter-spacing:.13em;font-size:10px;font-weight:700}
+html[data-ui="ledger"] .h1,html[data-ui="ledger"] .big{font-family:Iowan Old Style,"Baskerville",Georgia,serif;font-weight:600;letter-spacing:-1.5px}
+html[data-ui="ledger"] .h1{font-size:39px}.big{font-size:42px}
+html[data-ui="ledger"] .card{border-radius:5px;padding:18px;box-shadow:0 1px 0 rgba(48,45,34,.08),0 12px 28px rgba(65,54,36,.06)}
+html[data-ui="ledger"] .row,html[data-ui="ledger"] .ep{border-radius:5px;border-left:3px solid transparent;box-shadow:0 1px 0 rgba(48,45,34,.07)}
+html[data-ui="ledger"] .row:hover,html[data-ui="ledger"] .ep:hover{border-left-color:var(--accent)}
+html[data-ui="ledger"] .tile{border-radius:50%;color:#fff!important}
+html[data-ui="ledger"] .chip-date,html[data-ui="ledger"] .iconbtn{border-radius:999px}
+html[data-ui="ledger"] .tabbar{background:#faf7ef;border-top:1px solid #d5cfc2}
+html[data-ui="ledger"] .tab.score .ring{background:#faf7ef;box-shadow:0 0 0 6px #faf7ef}
+html[data-ui="ledger"] .field input{color:var(--text);border-color:var(--line)}
+
+/* Signal: cool navy terminal, cyan accents, compact data rhythm. */
+html[data-ui="signal"]{
+  --bg:#07121d;--card:#0d1d2a;--card-2:#122838;--line:#1d3a4d;--text:#eefaff;--muted:#7ea0b2;
+  --accent:#28c7e6;--accent-soft:#103947;--gain:#42dfa0;--gain-soft:#10382d;--loss:#ff6f78;--loss-soft:#3a1921;
+}
+html[data-ui="signal"] body{background:radial-gradient(circle at 50% 10%,#123146 0,#06101a 42%,#03090f 100%)}
+html[data-ui="signal"] .phone{box-shadow:0 0 0 1px #214357,0 0 70px rgba(40,199,230,.13),0 40px 90px rgba(0,0,0,.62)}
+html[data-ui="signal"] .screen{background-image:linear-gradient(rgba(40,199,230,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(40,199,230,.02) 1px,transparent 1px);background-size:24px 24px}
+html[data-ui="signal"] .h1,html[data-ui="signal"] .big{letter-spacing:-1.5px}
+html[data-ui="signal"] .eyebrow,html[data-ui="signal"] .card-title,html[data-ui="signal"] .chip-date{font-family:"SFMono-Regular",Menlo,monospace;text-transform:uppercase;letter-spacing:.08em;font-size:10px}
+html[data-ui="signal"] .card{border-radius:14px;box-shadow:inset 0 0 0 1px rgba(75,205,231,.08)}
+html[data-ui="signal"] .row,html[data-ui="signal"] .ep{border-radius:12px;box-shadow:inset 0 0 0 1px rgba(75,205,231,.06)}
+html[data-ui="signal"] .tile{border-radius:8px}
+html[data-ui="signal"] .ranges{padding:4px;background:#091722;border-radius:12px}
+html[data-ui="signal"] .ranges button{flex:1}
+html[data-ui="signal"] .tabbar{background:#081621;border-top-color:#1d3a4d}
+html[data-ui="signal"] .tab.score .ring{background:#081621;box-shadow:0 0 0 6px #081621}
+html[data-ui="signal"] .bar{height:4px}
+
+@media(max-width:420px){html[data-ui="obsidian"] .tabbar{bottom:8px}}
+@media(prefers-reduced-motion:reduce){html[data-ui] .screen>*{animation:none}}
